@@ -524,9 +524,12 @@ func (d *Decoder) parseTypeName() (Token, error) {
 }
 
 func (d *Decoder) parseTypeNameError(s []byte, numUnconsumedChars int) error {
+	if numUnconsumedChars > len(s) {
+		numUnconsumedChars = len(s)
+	}
 	return d.newSyntaxError(
 		"invalid type URL/extension field name: %s",
-		d.in[:len(d.in)-len(s)+min(numUnconsumedChars, len(s))],
+		d.in[:len(d.in)-len(s)+numUnconsumedChars],
 	)
 }
 
